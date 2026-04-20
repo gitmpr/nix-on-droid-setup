@@ -37,8 +37,20 @@ ssh-keygen -t ed25519 -f ~/.ssh/ssh_host_ed25519_key -N ""
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/ssh_host_rsa_key -N ""
 ```
 
+## SSH usage
+
+Interactive SSH sessions (just `ssh nix-on-droid`) go through `~/.bash_profile` → `/etc/profile` and get the full Nix PATH, so everything works normally.
+
+Non-interactive sessions (`ssh nix-on-droid 'some-command'`) do not source any profile, so Nix-installed binaries aren't on the PATH. Prefix commands with `~/.nix-profile/bin/`:
+
+```bash
+ssh nix-on-droid '~/.nix-profile/bin/cat ~/.config/nvim/init.lua'
+ssh nix-on-droid '~/.nix-profile/bin/nvim --version'
+ssh nix-on-droid '~/.nix-profile/bin/git -C ~/.config/nix-on-droid status'
+```
+
 ## Known limitations
 
 - **Fetching new nixpkgs tarballs fails** with `Can't set permissions to 0755` due to Android filesystem restrictions in the proot environment. This means adding a second nixpkgs input (e.g. nixpkgs-unstable) to the flake does not work. Upgrading the channel requires fetching a fresh tarball and will hit the same issue.
-- **Non-interactive SSH sessions** (`ssh host 'command'`) do not get the Nix PATH. The `~/.bash_profile` fix only applies to interactive login shells. Prefix commands with `~/.nix-profile/bin/` as a workaround, e.g. `ssh nix-on-droid '~/.nix-profile/bin/nvim --version'`.
+- **Non-interactive SSH PATH**: see SSH usage section above.
 - **Neovim is v0.9.5** (from nixpkgs 24.05). The init.lua OSC52 clipboard block is guarded with a `vim.fn.has('nvim-0.10')` check so it degrades gracefully.
