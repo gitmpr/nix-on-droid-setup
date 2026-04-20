@@ -1,0 +1,8 @@
+# ~/.bash_profile
+# Sourced by bash for login shells (SSH sessions, nix-on-droid terminal, etc.)
+
+# Set up Nix environment (PATH, NIX_PATH, NIX_SSL_CERT_FILE, etc.)
+[ -f /etc/profile ] && . /etc/profile
+
+# Source .bashrc for interactive settings (aliases, prompt, functions, etc.)
+[ -f ~/.bashrc ] && . ~/.bashrc

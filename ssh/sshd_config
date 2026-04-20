@@ -1,0 +1,8 @@
+Port 9022
+
+HostKey ~/.ssh/ssh_host_ed25519_key
+HostKey ~/.ssh/ssh_host_rsa_key
+
+AuthorizedKeysFile .ssh/authorized_keys
+
+Subsystem sftp /data/data/com.termux.nix/files/home/.nix-profile/libexec/sftp-server
